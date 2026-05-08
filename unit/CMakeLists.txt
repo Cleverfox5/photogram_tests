@@ -34,6 +34,8 @@ set(src_files       ${auth_src_dir}/HttpDef.hpp
                     ${auth_src_dir}/HttpParser.cpp
                     ${auth_src_dir}/Request.hpp
                     ${auth_src_dir}/Request.cpp
+                    ${auth_src_dir}/FormData.cpp
+                    ${auth_src_dir}/FormData.hpp
 )
 
 set(tests ${CMAKE_SOURCE_DIR}/tests/http_test.cpp)
