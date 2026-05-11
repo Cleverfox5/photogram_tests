@@ -31,7 +31,9 @@ pipeline {
                 bat """
                     @echo off
                     cd tests\\fuzz\\build\\Release
-                    fuzz_http %SHARED_FUZZ_CORPUS% -max_total_time=240 -timeout=1 -exact_artifact_path=%SHARED_FUZZ_CRASH%
+                    echo %cd%
+                    echo fuzz_http %SHARED_FUZZ_CORPUS% -max_total_time=240 -timeout=1 -exact_artifact_path=%SHARED_FUZZ_CRASH%/http_%BUILD_NUMBER%
+                    fuzz_http %SHARED_FUZZ_CORPUS% -max_total_time=240 -timeout=1 -exact_artifact_path=%SHARED_FUZZ_CRASH%/http_%BUILD_NUMBER%
                 """
             }
         }
