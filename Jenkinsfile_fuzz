@@ -1,0 +1,44 @@
+pipeline {
+    agent {
+        label 'testing'
+    }
+    environment {
+        SHARED_FUZZ_CORPUS="C:\\shared_dir\\fuzzer\\http_corpus"
+        SHARED_FUZZ_CRASH="C:\\shared_dir\\fuzzer\\http_crash"
+    }
+    stages {
+        stage('Generating Build Files') {
+            steps {
+                bat """
+                    @echo off
+                    mkdir tests\\unit\\build
+                    cd tests\\fuzz\\build
+                    cmake .. -G "Visual Studio 17 2022" -A x64
+                """
+            }
+        }
+        stage('Building tests') {
+            steps {
+                bat """
+                    @echo off
+                    cd tests\\fuzz\\build
+                    cmake --build . --config Release
+                """
+            }
+        }
+        stage('Running Tests') {
+            steps {
+                bat """
+                    @echo off
+                    cd tests\\fuzz\\build\\Release
+                    fuzz_http %SHARED_FUZZ_CORPUS% -max_total_time=240 -timeout=1 -exact_artifact_path=%SHARED_FUZZ_CRASH%
+                """
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, notFailBuild: true
+        }
+    }
+}
