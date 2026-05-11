@@ -4,7 +4,7 @@
 
 //OPTIONS
 
-TEST(HttpOptions, Basic) 
+TEST(HttpOptions, basic) 
 {
     std::string http_request =
         "OPTIONS /login HTTP/1.1\r\n"
@@ -35,7 +35,7 @@ TEST(HttpOptions, Basic)
 
 //POST
 
-TEST(HttpPost, Login)
+TEST(HttpPost, login)
 {
     std::string http_request =
         "POST /login HTTP/1.1\r\n"
