@@ -1,0 +1,40 @@
+pipeline {
+    agent {
+        label 'testing'
+    }
+    stages {
+        stage('Generating Build Files') {
+            steps {
+                bat """
+                    @echo off
+                    mkdir tests\\unit\\build
+                    cd tests\\unit\\build
+                    cmake .. -G "Visual Studio 17 2022" -A x64
+                """
+            }
+        }
+        stage('Building tests') {
+            steps {
+                bat """
+                    @echo off
+                    cd tests\\unit\\build
+                    cmake --build . --config Release
+                """
+            }
+        }
+        stage('Running Tests') {
+            steps {
+                bat """
+                    @echo off
+                    cd tests\\unit\\build\\Release
+                    http_test
+                """
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, notFailBuild: true
+        }
+    }
+}
