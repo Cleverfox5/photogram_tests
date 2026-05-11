@@ -3,12 +3,32 @@ pipeline {
         label 'testing'
     }
     stages {
-        stage('Hello') {
+        stage('Generating Build Files') {
             steps {
                 bat """
                     @echo off
-                    echo "Hello world"
-                    exit /b 0
+                    echo %cd%
+                    mkdir ..\\build
+                    cd ..\\build
+                    cmake .. -G "Visual Studio 17 2022" -A x64
+                """
+            }
+        }
+        stage('Build auth_server') {
+            steps {
+                bat """
+                    @echo off
+                    cd ..\\build
+                    cmake --build . --config Release -t auth_server
+                """
+            }
+        }
+        stage('Build content_server') {
+            steps {
+                bat """
+                    @echo off
+                    cd ..\\build
+                    cmake --build . --config Release -t content_server
                 """
             }
         }
