@@ -7,9 +7,8 @@ pipeline {
             steps {
                 bat """
                     @echo off
-                    echo %cd%
-                    mkdir ..\\build
-                    cd ..\\build
+                    mkdir build
+                    cd build
                     cmake .. -G "Visual Studio 17 2022" -A x64
                 """
             }
@@ -18,7 +17,7 @@ pipeline {
             steps {
                 bat """
                     @echo off
-                    cd ..\\build
+                    cd build
                     cmake --build . --config Release -t auth_server
                 """
             }
@@ -27,7 +26,7 @@ pipeline {
             steps {
                 bat """
                     @echo off
-                    cd ..\\build
+                    cd build
                     cmake --build . --config Release -t content_server
                 """
             }
