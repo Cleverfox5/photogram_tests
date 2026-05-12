@@ -51,6 +51,12 @@ source_group(TREE ${CMAKE_SOURCE_DIR}/tests
     FILES ${tests}
 )
 
+if(MSVC)
+    get_filename_component(MSVC_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    file(GLOB ASAN_DLL_TO_COPY "${MSVC_BIN_DIR}/clang_rt.asan_dynamic-x86_64.dll")
+    file(COPY ${ASAN_DLL_TO_COPY} DESTINATION ${CMAKE_BINARY_DIR}/Release)
+endif()
+
 
 enable_testing()
 
